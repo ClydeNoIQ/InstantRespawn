@@ -1,0 +1,6 @@
+name: InstantRespawn
+main: blitz\InstantRespawn
+version: 1.0.0
+api: 5.0.0
+author: blitz
+description: "Skips the death screen and instantly respawns the player."
