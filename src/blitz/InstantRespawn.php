@@ -6,9 +6,9 @@ namespace blitz;
 
 use pocketmine\event\Listener;
 use pocketmine\event\player\PlayerDeathEvent;
-use pocketmine\event\player\PlayerRespawnEvent;
 use pocketmine\plugin\PluginBase;
 use pocketmine\player\Player;
+use pocketmine\scheduler\Task;
 
 class InstantRespawn extends PluginBase implements Listener {
 
@@ -18,11 +18,10 @@ class InstantRespawn extends PluginBase implements Listener {
 
     public function onPlayerDeath(PlayerDeathEvent $event): void {
         $player = $event->getPlayer();
-        $event->setKeepInventory(true); // Keep inventory (optional)
-        $event->setKeepExperience(true); // Keep XP (optional)
+        $event->setKeepInventory(true); // Keep inventory on death
 
-        // Skip death screen by forcing immediate respawn
-        $this->getScheduler()->scheduleDelayedTask(new class($player) extends \pocketmine\scheduler\Task {
+        // Skip death screen by forcing an instant respawn
+        $this->getScheduler()->scheduleDelayedTask(new class($player) extends Task {
             private Player $player;
             public function __construct(Player $player) {
                 $this->player = $player;
@@ -32,6 +31,6 @@ class InstantRespawn extends PluginBase implements Listener {
                     $this->player->respawn();
                 }
             }
-        }, 1); // 1-tick delay to ensure smooth respawn
+        }, 1); // Delay by 1 tick to ensure proper respawn
     }
 }
